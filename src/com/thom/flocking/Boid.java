@@ -3,6 +3,8 @@ package com.thom.flocking;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 
 public class Boid {
@@ -17,15 +19,9 @@ public class Boid {
 	private double maxspeed;    	//Maximum speed.
 	private float neighbordist;		//Detection range.
 	private float separation;		//Separation between two boids.
-	//private double rotation;
+	private double rotation;
 	
 	private int diameter;
-	
-	//private Vector2 direction;
-	//private Vector2 playerPos;
-	
-	//private double angle;
-	//private double scale;
 
 	public Boid(double x, double y) {
 		diameter = 32;
@@ -38,16 +34,10 @@ public class Boid {
 	    velocity = new Vector2(Math.cos(angle), Math.sin(angle));
 	    location = new Vector2(x, y);
 	    
-	    maxspeed = 1.5;
-	    maxforce = 0.03;
+	    maxspeed = 3.0;
+	    maxforce = 0.08;
 	    neighbordist = 120;
-	    separation = 48;
-
-		//location = new Vector2(x, y);
-		//velocity = new Vector2(0, 0);
-		//angle = Vector2.deg2rad(36.8);
-		//velocity.fromAngle(angle);
-		//scale = 0.7;
+	    separation = 40;
 	}
 
 	public void run(ArrayList<Boid> boids) {
@@ -58,23 +48,16 @@ public class Boid {
 	 
 	//We accumulate a new acceleration each time based on three rules.
 	public void flock(ArrayList<Boid> boids) {
-		//double mouseX = Main.mouseX;
-		//double mouseY = Main.mouseY;
-		
-		//Vector2 seek = seek(new Vector2(mouseX, mouseY));
-		//System.out.println(mouseX + " , " + mouseY);
 		Vector2 sep = separate(boids);
 		Vector2 ali = align(boids);
 		Vector2 coh = cohesion(boids);
 		
 		//Arbitrarily weight these forces.
-		//seek.multS(1.0);
 		sep.multS(1.8);
 		ali.multS(1.0);
 		coh.multS(1.0);
 		
 		//Add the force vectors to acceleration.
-		//applyForce(seek);
 		applyForce(sep);
 		applyForce(ali);
 		applyForce(coh);
@@ -84,7 +67,7 @@ public class Boid {
 	public void update() {
 	    velocity.add(acceleration);
 	    
-	    //rotation = Vector2.rad2deg(velocity.getAngle());
+	    rotation = Vector2.deg2rad(velocity.getAngle());
 	    
 	    velocity.limit(maxspeed);
 	    location.add(velocity);
@@ -211,21 +194,21 @@ public class Boid {
 
 	public void render(Graphics g) {
 		Graphics2D g2D = (Graphics2D)g;
-		g2D.setColor(Color.orange);
-
-		//Here a circle is drawn with 0,0 in the middle of it.
-		g2D.fillOval((int)location.x - diameter/2, 
-		(int)location.y - diameter/2, diameter, diameter);
 		
-		/** //Here a triangle is drawn with simple lines.
+		AffineTransform oldTransform = g2D.getTransform();
+	    g2D.setTransform(AffineTransform.getRotateInstance(rotation, location.x, location.y));
+
+		//Here a triangle is drawn with simple lines.
+		g2D.setColor(Color.black);
+		
 		Point point2 = new Point((int) location.x - 11, (int) location.y - 10);
 		Point point3 = new Point((int) location.x + 15, (int) location.y);
 		Point point4 = new Point((int) location.x - 11, (int) location.y + 10);
-		
-		g2D.setColor(Color.white);
+
 		g2D.drawLine(point2.x, point2.y, point3.x, point3.y);
 		g2D.drawLine(point3.x, point3.y, point4.x, point4.y);
 		g2D.drawLine(point2.x, point2.y, point4.x, point4.y);
-		//g2D.rotate(rotation); **/	
+
+		g2D.setTransform(oldTransform);
 	}
 }

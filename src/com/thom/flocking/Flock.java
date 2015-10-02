@@ -12,7 +12,7 @@ public class Flock {
 	}
 	
 	public void update() {
-		for (Boid b : boids) {
+		for(Boid b : boids) {
 			//Passing the entire list of boids to each boid individually.
 			b.run(boids);
 		}
