@@ -35,7 +35,7 @@ public class Boid {
 	    location = new Vector2(x, y);
 	    
 	    maxspeed = 3.0;
-	    maxforce = 0.08;
+	    maxforce = 0.04;
 	    neighbordist = 120;
 	    separation = 40;
 	}

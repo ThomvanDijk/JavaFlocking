@@ -11,7 +11,7 @@ public class Main extends Canvas implements Runnable {
 	
 	private static final long serialVersionUID = -2285453672747000155L;
 
-	public static final int WIDTH = 1200, HEIGHT = 700;
+	public static final int WIDTH = 1920, HEIGHT = 1080;
 	
 	private Thread thread;
 	private boolean running = false;
@@ -69,17 +69,21 @@ public class Main extends Canvas implements Runnable {
 		double ns = 1000000000 / amountOfTicks;
 		double delta = 0;
 		long timer = System.currentTimeMillis();
+		
 		while(running) {
 			long now = System.nanoTime();
 			delta += (now - lastTime) / ns;
 			lastTime = now;
+			
 			while(delta >= 1) {
 				update();
 				delta--;
 			}
+			
 			if (running) {
 				render();
 			}
+			
 			frames++;
 			if (System.currentTimeMillis() - timer > 1000) {
 				FPSCounter = frames;
@@ -94,7 +98,7 @@ public class Main extends Canvas implements Runnable {
 	private void update() {
 		flock.update();
 
-		if (boids < 30) {
+		if (boids < 400) {
 			double randomX = Math.random() * WIDTH;
 			double randomY = Math.random() * HEIGHT;
 			
