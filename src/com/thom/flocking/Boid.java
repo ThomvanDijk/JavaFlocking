@@ -4,7 +4,9 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Line2D;
 import java.util.ArrayList;
 
 public class Boid {
@@ -195,6 +197,7 @@ public class Boid {
 	// Display the boid using lines
 	public void render(Graphics g) {
 		Graphics2D g2D = (Graphics2D)g;
+		g2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		
 		// Save the transform to prevent changing other graphical elements
 		AffineTransform oldTransform = g2D.getTransform();
@@ -203,13 +206,13 @@ public class Boid {
 		// Here a triangle is drawn with simple lines
 		g2D.setColor(Color.black);
 		
-		Point point2 = new Point((int) location.x - 11, (int) location.y - 10);
-		Point point3 = new Point((int) location.x + 15, (int) location.y);
-		Point point4 = new Point((int) location.x - 11, (int) location.y + 10);
-
-		g2D.drawLine(point2.x, point2.y, point3.x, point3.y);
-		g2D.drawLine(point3.x, point3.y, point4.x, point4.y);
-		g2D.drawLine(point2.x, point2.y, point4.x, point4.y);
+		Vector2 point2 = new Vector2(location.x - 11, location.y - 10);
+		Vector2 point3 = new Vector2(location.x + 15, location.y);
+		Vector2 point4 = new Vector2(location.x - 11, location.y + 10);
+		
+		g2D.draw(new Line2D.Double(point2.x, point2.y, point3.x, point3.y));
+		g2D.draw(new Line2D.Double(point3.x, point3.y, point4.x, point4.y));
+		g2D.draw(new Line2D.Double(point2.x, point2.y, point4.x, point4.y));
 
 		g2D.setTransform(oldTransform);
 	}
