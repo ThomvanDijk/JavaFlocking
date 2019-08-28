@@ -11,7 +11,7 @@ public class Main extends Canvas implements Runnable {
 	
 	private static final long serialVersionUID = -2285453672747000155L;
 
-	public static final int WIDTH = 1920, HEIGHT = 1080;
+	public static final int WIDTH = 900, HEIGHT = 800;
 	
 	private Thread thread;
 	private boolean running = false;
@@ -102,8 +102,7 @@ public class Main extends Canvas implements Runnable {
 			double randomX = Math.random() * WIDTH;
 			double randomY = Math.random() * HEIGHT;
 			
-			flock.addBoid(new Boid(randomX, randomY));
-			boids++;
+			addBoid(randomX, randomY);
 		}
 	}
 	
@@ -135,6 +134,7 @@ public class Main extends Canvas implements Runnable {
 	public void hud(Graphics g) {
 		g.setColor(Color.black);
 		g.drawString("FPS: " + Integer.toString(FPSCounter), 10, 20);
+		g.drawString("Boids: " + flock.getNumberOfBoids(), 70, 20);
 	}
 
 	public static void main(String[] args) {

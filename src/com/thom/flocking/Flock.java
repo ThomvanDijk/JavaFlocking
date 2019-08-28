@@ -11,9 +11,9 @@ public class Flock {
 		boids = new ArrayList<Boid>();
 	}
 	
-	public void update() {
+	public synchronized void update() {
 		for(Boid b : boids) {
-			//Passing the entire list of boids to each boid individually.
+			// Passing the entire list of boids to each boid individually
 			b.run(boids);
 		}
 	}
@@ -28,5 +28,9 @@ public class Flock {
 	
 	public void addBoid(Boid b) {
 		boids.add(b);
+	}
+	
+	public int getNumberOfBoids() {
+		return boids.size();
 	}
 }
