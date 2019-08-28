@@ -98,7 +98,7 @@ public class Main extends Canvas implements Runnable {
 	private void update() {
 		flock.update();
 
-		if (boids < 400) {
+		if (boids < 100) {
 			double randomX = Math.random() * WIDTH;
 			double randomY = Math.random() * HEIGHT;
 			
@@ -133,7 +133,7 @@ public class Main extends Canvas implements Runnable {
 	//Here the heads up display is drawn.
 	public void hud(Graphics g) {
 		g.setColor(Color.black);
-		g.drawString("FPS: " + Integer.toString(FPSCounter), 10, 20);
+		g.drawString("FPS: " + FPSCounter, 10, 20);
 		g.drawString("Boids: " + flock.getNumberOfBoids(), 70, 20);
 	}
 

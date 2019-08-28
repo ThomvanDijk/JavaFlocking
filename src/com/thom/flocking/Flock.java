@@ -5,16 +5,21 @@ import java.util.ArrayList;
 
 public class Flock {
 	
-	ArrayList<Boid> boids; 
+	private ArrayList<Boid> boids;
+	private boolean lock;
 	
 	public Flock() {
 		boids = new ArrayList<Boid>();
+		lock = true;
 	}
 	
-	public synchronized void update() {
-		for(Boid b : boids) {
+	public void update() {
+		// Save the list of boids to prevent list manipulation in the for loop
+		ArrayList<Boid> oldList = new ArrayList<Boid>(boids);
+		
+		for(Boid b: oldList) {
 			// Passing the entire list of boids to each boid individually
-			b.run(boids);
+			b.run(oldList);
 		}
 	}
 	
