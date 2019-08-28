@@ -6,11 +6,9 @@ import java.util.ArrayList;
 public class Flock {
 	
 	private ArrayList<Boid> boids;
-	private boolean lock;
 	
 	public Flock() {
 		boids = new ArrayList<Boid>();
-		lock = true;
 	}
 	
 	public void update() {

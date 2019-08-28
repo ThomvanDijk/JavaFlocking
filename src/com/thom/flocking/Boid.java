@@ -46,7 +46,7 @@ public class Boid {
 	    borders();
 	}
 	 
-	//We accumulate a new acceleration each time based on three rules.
+	// We accumulate a new acceleration each time based on three rules
 	public void flock(ArrayList<Boid> boids) {
 		Vector2 sep = separate(boids);
 		Vector2 ali = align(boids);
@@ -63,7 +63,7 @@ public class Boid {
 		applyForce(coh);
 	}
 
-	//Method to update location.
+	// Method to update location
 	public void update() {
 	    velocity.add(acceleration);
 	    
@@ -78,6 +78,7 @@ public class Boid {
 		this.y = location.y;
 	}
 	
+	// This are the borders of the screen and replacing the boid it it hits it
 	public void borders() {
 		if(location.x > Main.WIDTH + diameter/2) {
 			location.x = -diameter/2;
@@ -96,22 +97,9 @@ public class Boid {
 	void applyForce(Vector2 force) {
 		acceleration.add(force);
 	}
-
-	//Here you calculate the steering towards a target.
-	public Vector2 seek(Vector2 target) {
-		Vector2 targetcopy = new Vector2(target.x, target.y);
-        Vector2 desired = targetcopy.sub(location);
-        
-	    desired.normalize();
-	    desired.multS(maxspeed);
-	    Vector2 steer = desired.sub(velocity);
-	    steer.limit(maxforce);
-	    
-	    return steer;
-	}
 	
-	//Separation.
-	//Method checks for nearby boids and steers away.
+	// Separation
+	// Method checks for nearby boids and steers away
 	public Vector2 separate(ArrayList<Boid> boids) {
 		Vector2 sum = new Vector2(0, 0);
 		int count = 0;
@@ -125,19 +113,19 @@ public class Boid {
 	            Vector2 diff = locationcopy.sub(other.location);
 	            
 	    		diff.normalize();
-	    		diff.divS(d);        //Weight by distance.
+	    		diff.divS(d);    	// Weight by distance
 	    		sum.add(diff);
-	    		count++;            //Keep track of how many.
+	    		count++;            // Keep track of how many
 	    	}
 	    }
 	    
-	    //Average -- divide by how many.
+	    // Average -- divide by how many
 	    if (count > 0) {
 	    	sum.divS(count);
 	    	sum.normalize();
 	    }
 
-	    //As long as the vector is greater than 0.
+	    // As long as the vector is greater than 0
 	    if (sum.mag() > 0) {
 	    	sum.multS(maxspeed);
 	    	Vector2 steer = sum.sub(velocity);
@@ -146,8 +134,8 @@ public class Boid {
 	    return sum;
 	}
 
-	//Alignment.
-	//For every nearby boid in the system, calculate the average velocity.
+	// Alignment
+	// For every nearby boid in the system, calculate the average velocity
 	public Vector2 align(ArrayList<Boid> boids) {
 		Vector2 sum = new Vector2(0, 0);
 		int count = 0;
@@ -171,8 +159,8 @@ public class Boid {
 	    }
 	}
 
-	//Cohesion.
-	//For the average location (i.e. center) of all nearby boids, calculate steering vector towards that location.
+	// Cohesion
+	// For the average location (i.e. center) of all nearby boids, calculate steering vector towards that location
 	public Vector2 cohesion(ArrayList<Boid> boids) {
 		Vector2 sum = new Vector2(0, 0);
 		int count = 0;
@@ -185,20 +173,34 @@ public class Boid {
 	    }
 	    if (count > 0) {
 	    	sum.divS(count);
-	    	return seek(sum);  //Steer towards the location.
+	    	return seek(sum);  // Steer towards the location
 	    } 
 	    else {
 	    	return new Vector2(0, 0);
 	    }
 	}
+	
+	// Here you calculate the steering towards a target
+	public Vector2 seek(Vector2 target) {
+        Vector2 desired = target.sub(location);
+	    desired.normalize();
+	    desired.multS(maxspeed);
+	    
+	    Vector2 steer = desired.sub(velocity);
+	    steer.limit(maxforce);
+	    
+	    return steer;
+	}
 
+	// Display the boid using lines
 	public void render(Graphics g) {
 		Graphics2D g2D = (Graphics2D)g;
 		
+		// Save the transform to prevent changing other graphical elements
 		AffineTransform oldTransform = g2D.getTransform();
 	    g2D.setTransform(AffineTransform.getRotateInstance(rotation, location.x, location.y));
 
-		//Here a triangle is drawn with simple lines.
+		// Here a triangle is drawn with simple lines
 		g2D.setColor(Color.black);
 		
 		Point point2 = new Point((int) location.x - 11, (int) location.y - 10);
